@@ -84,9 +84,12 @@
             $result = Task::getAll();
             // var_dump($result);
 
+            var_dump($result);
+            var_dump($expected_output);
             //ASSERT
             $this->assertEquals($expected_output, $result);
             $this->tearDown();
+
         }
 
         function test_deleteAll()

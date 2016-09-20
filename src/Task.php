@@ -36,17 +36,18 @@
         static function getAll()
         {
             $database_tasks = $GLOBALS['DB']->query("SELECT * FROM tasks;");
-            // var_dump("database_tasks: " . $database_tasks . "\n");
+            // var_dump($database_tasks);
 
             $database_data = $database_tasks->fetchAll();
             // var_dump("database_data: " . $database_data . "\n");
 
             $tasks = array();
 
-            // foreach ($database_tasks as $task )
+            // foreach ($database_tasks as $task)
             // {
             //     $description = $task['description'];
-            //     $new_task = new Task($description);
+            //     $id = $task['id'];
+            //     $new_task = new Task($description, $id);
             //     array_push($tasks, $new_task);
             // }
             for ($task_index = 0; $task_index < count($database_data); $task_index++)

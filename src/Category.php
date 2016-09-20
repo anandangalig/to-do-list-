@@ -27,13 +27,14 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO categories (name) VALUES('{$this->getName()}');");
+            $GLOBALS['DB']->exec("INSERT INTO category (name) VALUES('{$this->getName()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
         static function getAll()
         {
-            $database_categories = $GLOBALS['DB']->query("SELECT * FROM categories;");
+            $database_categories = $GLOBALS['DB']->query("SELECT * FROM category;");
+
             $database_data = $database_categories->fetchAll();
             $categories =  array();
 
@@ -50,7 +51,7 @@
 
         static function deleteAll()
         {
-            $GLOBALS['DB']->exec("DELETE FROM categories;");
+            $GLOBALS['DB']->exec("DELETE FROM category;");
         }
 
         static function find($search_id)

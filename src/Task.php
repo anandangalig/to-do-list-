@@ -3,11 +3,13 @@
     class Task{
         private $description;
         private $id;
+        private $category_id;
 
-        function __construct($description, $id=null)
+        function __construct($description, $id = null, $category_id)
         {
             $this->description = $description;
             $this->id = $id;
+            $this->category_id = $category_id;
         }
 
         function getDescription()
@@ -20,17 +22,24 @@
             $this->description = (string) $new_description;
 
         }
-        function getID()
+        function getId()
         {
             return $this->id;
         }
+
+        function getCategoryId()
+        {
+            return $this->category_id;
+        }
+
         //NOTE: no setter, probably because in memory we want to create tasks with no ID and SQL will assign the IDs in the database... maybe
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO tasks (description) VALUES ('{$this->getDescription()}');");
+            $GLOBALS['DB']->exec("INSERT INTO tasks (description, category_id) VALUES ('{$this->getDescription()}', {$this->getCategoryId()})");
             //NOTE: this will sync the local id with the SQL ID
             $this->id = $GLOBALS['DB']->lastInsertId();
+
         }
 
         static function getAll()
@@ -55,8 +64,9 @@
                 $description = $database_data[$task_index]['description'];
                 //   var_dump($description);
                 //NOTE: this is getting the id from the database
+                $category_id = $database_data[$task_index]['category_id'];
                 $id = $database_data[$task_index]['id'];
-                $new_task = new Task($description, $id);
+                $new_task = new Task($description, $id, $category_id);
                 //NOTE: This is the same as array push:
                 $tasks[] = $new_task;
             }
@@ -74,7 +84,7 @@
             $found_task = null;
             $tasks = Task::getAll();
             for ($task_index = 0; $task_index < count($tasks); $task_index++){
-                $current_id = $tasks[$task_index]->getID();
+                $current_id = $tasks[$task_index]->getId();
                 if ($current_id === $search_id){
                     return $tasks[$task_index];
                 }

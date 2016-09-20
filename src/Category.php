@@ -20,9 +20,23 @@
             $this->name = (string) $new_name;
         }
 
-        function getID()
+        function getId()
         {
             return $this->id;
+        }
+
+        function getTasks()
+        {
+            $tasks = Array();
+            $returned_tasks = $GLOBALS['DB']->query("SELECT * FROM tasks WHERE category_id = {$this->getId()};");
+            foreach($returned_tasks as $task) {
+                $description = $task['description'];
+                $id = $task['id'];
+                $category_id = $task['category_id'];
+                $new_task = new Task($description, $id, $category_id);
+                array_push($tasks, $new_task);
+            }
+            return $tasks;
         }
 
         function save()
@@ -59,7 +73,7 @@
             $found_category = null;
             $categories = Category::getAll();
             for ($category_index = 0; $category_index < count($categories); $category_index++){
-                $current_id = $categories[$category_index]->getID();
+                $current_id = $categories[$category_index]->getId();
                 if ($current_id === $search_id){
                     return $categories[$category_index];
                 }

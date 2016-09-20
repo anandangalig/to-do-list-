@@ -6,7 +6,25 @@
   <body>
     <h1>Welcome</h1>
 
-    <p><a href="/categories">Click here</a> to see the categories add one more</p>
-    <p><a href="/tasks">Click here</a> to see all the tasks add one more</p>
+    <p>Create a new category</p>
+
+    <form action="/categories" method="post">
+      <label for="name">Category name:</label>
+      <input id="name" name="name" type="text">
+
+      <button>Add Category</button>
+    </form>
+
+    {% if categories is not empty %}
+      <p>Here are all of your categories:</p>
+      <ul>
+        {% for category in categories %}
+          <li><a href="/categories/{{ category.getId }}">{{ category.getName }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>there are no categories yet!</p>
+    {% endif %}
+
   </body>
 </html>

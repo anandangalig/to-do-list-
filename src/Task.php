@@ -4,12 +4,25 @@
         private $description;
         private $id;
         private $category_id;
+        private $due_date;
 
-        function __construct($description, $id = null, $category_id)
+
+        function __construct($description, $id = null, $category_id, $due_date)
         {
             $this->description = $description;
             $this->id = $id;
             $this->category_id = $category_id;
+            $this->due_date = $due_date;
+        }
+
+        function getDueDate()
+        {
+            return $this->due_date;
+        }
+
+        function setDueDate($new_due_date)
+        {
+          $this->due_date = (string) $new_due_date;
         }
 
         function getDescription()
@@ -36,7 +49,7 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO tasks (description, category_id) VALUES ('{$this->getDescription()}', {$this->getCategoryId()})");
+            $GLOBALS['DB']->exec("INSERT INTO tasks (description, category_id, due_date) VALUES ('{$this->getDescription()}', {$this->getCategoryId()}, '{$this->getDueDate()}');");
             //NOTE: this will sync the local id with the SQL ID
             $this->id = $GLOBALS['DB']->lastInsertId();
 
@@ -65,8 +78,9 @@
                 //   var_dump($description);
                 //NOTE: this is getting the id from the database
                 $category_id = $database_data[$task_index]['category_id'];
+                $due_date = $database_data[$task_index]['due_date'];
                 $id = $database_data[$task_index]['id'];
-                $new_task = new Task($description, $id, $category_id);
+                $new_task = new Task($description, $id, $category_id, $due_date);
                 //NOTE: This is the same as array push:
                 $tasks[] = $new_task;
             }
